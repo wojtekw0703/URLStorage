@@ -17,11 +17,19 @@ class Database:
         self.cursor.execute(sql)
         self.connection.commit()
 
-if len(argv) > 1 and argv[1] == 'setup':
+    def insert(self, table, *values):
+        self.cursor.execute(f"INSERT INTO {table} VALUES ({','.join(['?' for _ in values])})",values)
+        self.connection.commit()
+
+if len(argv) == 2 and argv[1] == "setup":
     print('Tworze tabele')
-    db = Database(getenv('DB_NAME'))
-    db.create_table('CREATE TABLE urls (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, url TEXT')
+    db = Database(getenv("DB_NAME"))
+    db.create_table('CREATE TABLE urls (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, url TEXT)')
 
-    
-
+if len(argv) == 4 and argv[1] == 'add':
+    print('Dodaje nowy adres url')
+    category = argv[2]
+    url = argv[3]
+    db = Database(getenv("DB_NAME"))
+    db.insert('urls', None, category, url)
 
