@@ -19,3 +19,8 @@ class Database:
        values = conditions.values()
        return self.cursor.execute(f"SELECT * FROM {table} WHERE {' and '.join([f'{condition}=?' for condition in conditions])}",
         tuple(values))
+
+    def fetch_distinct(self, table,column):
+        return self.cursor.execute(
+          f'SELECT DISTINCT {column} FROM {table}'
+        )
