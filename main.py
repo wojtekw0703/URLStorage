@@ -3,10 +3,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-cli.add_command(setup)
-cli.add_command(add)
-cli.add_command(fetch_categories)
-cli.add_command(index)
+cli.add_command(setup_command)
+cli.add_command(add_command)
+cli.add_command(list_command)
+cli.add_command(index_command)
 
 if __name__ == "__main__":
     cli()

@@ -1,42 +1,38 @@
 from database import Database
 from os import getenv
 import click
+from repositories.urls import save, fetch_categories, fetch_urls
 
 @click.group()
 def cli():
     pass
 
 
-@click.command()
-def setup():
+@click.command(name='setup')
+def setup_command():
     print('Tworze tabele')
     db = Database(getenv("DB_NAME"))
     db.create_table('CREATE TABLE urls (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, url TEXT)')
 
 
-@click.command()
+@click.command('add')
 @click.argument('category')
 @click.argument('url')
-def add(category: str,url: str):
+def add_command(category: str,url: str):
     print('Dodaje nowy adres url')
-    db = Database(getenv("DB_NAME"))
-    db.insert('urls', None, category, url)
+    save(category,url)
 
 
 @click.command(name='categories')
-def fetch_categories():
+def list_command():
     print('Lista kategorii:')
-    db = Database(getenv("DB_NAME"))
-    categories = db.fetch_distinct('urls', 'category')
-    for name in categories:
+    for name in fetch_categories():
         print(name)
 
 
-@click.command()
+@click.command(name='index')
 @click.argument('category')
-def index(category: str):
+def index_command(category: str):
     print(f'Lista linkow z kategorii {category}:')
-    db = Database(getenv("DB_NAME"))
-    links = db.fetch_all('urls',category=category)
-    for link in links:
+    for link in fetch_urls(category):
         print(link[2])
