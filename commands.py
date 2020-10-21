@@ -15,7 +15,7 @@ def setup_command():
     db.create_table('CREATE TABLE urls (id INTEGER PRIMARY KEY AUTOINCREMENT, category TEXT, url TEXT)')
 
 
-@click.command('add')
+@click.command(name='add')
 @click.argument('category')
 @click.argument('url')
 def add_command(category: str,url: str):
